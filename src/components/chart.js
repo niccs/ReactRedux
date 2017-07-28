@@ -18,9 +18,8 @@ export default ({ data, color }) => {
         <SparklinesLine color={color} />
         <SparklinesReferenceLine type="mean" />
       </Sparklines>
-      <div>
-        {sum(data) / data.length}
-      </div>
+
+      {Math.round(sum(data) / data.length)}
     </div>
   );
 };
