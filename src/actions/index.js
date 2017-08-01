@@ -21,3 +21,14 @@ export function fetchWeather(city) {
     payload: request
   };
 }
+
+export function fetchSensorData(city) {
+  const url = "http://localhost:4000/sensors/";
+  // const request = fetch(url);
+  const request = axios.get(url);
+
+  return {
+    type: "FETCH_SENSOR_DATA",
+    payload: request
+  };
+}
