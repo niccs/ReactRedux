@@ -5,6 +5,7 @@ import { fetchSensorData } from "../actions/index";
 import SensorModel from "../models/sensorDataModel";
 
 import MainChart from "../components/mainChart";
+import SocketController from "../controllers/socketController";
 
 const data1 = [
   { id: "Page A", temp: 4000, humidity: 2400, sensor1: 2400 },
@@ -17,8 +18,20 @@ const data1 = [
 ];
 class SensorData extends Component {
   componentDidMount() {
+    const socketController = new SocketController();
     this.props.fetchSensorData();
+    socketController.createSensorChannel(this.onNewSensorDataRecd);
   }
+  // chat request status recd(acknowledged) from socket, we dont need a modal for this
+  onNewSensorDataRecd = (channelState, channelObj) => {
+    // console.log('wink_state: onChatRequestReceived:',channelObj);
+    // for new_conversation state, pop an alert to user to ACCEPT/BLOCK/HOLD the request
+    console.log("is it even listening");
+    if (channelState === "STATE_NEW") {
+      console.log("************************Nix************************");
+      console.log(channelObj);
+    }
+  };
   render() {
     console.log(this.props.sensorData);
     if (!this.props.sensorData.length > 0) {
