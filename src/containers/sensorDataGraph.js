@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchSensorData } from "../actions/index";
+import { fetchSensorData, fetchNewSensorDataRow } from "../actions/index";
 import SensorModel from "../models/sensorDataModel";
 
 import MainChart from "../components/mainChart";
@@ -23,27 +23,31 @@ class SensorData extends Component {
     socketController.createSensorChannel(this.onNewSensorDataRecd);
   }
   // chat request status recd(acknowledged) from socket, we dont need a modal for this
-  onNewSensorDataRecd = (channelState, channelObj) => {
+  onNewSensorDataRecd = (channelState, data) => {
     // console.log('wink_state: onChatRequestReceived:',channelObj);
     // for new_conversation state, pop an alert to user to ACCEPT/BLOCK/HOLD the request
     console.log("is it even listening");
     if (channelState === "STATE_NEW") {
-      console.log("************************Nix************************");
-      console.log(channelObj);
+      // console.log("************************Nix************************");
+      // console.log(data.sensor);
+      const newSensor = { data: { data: data.sensor } };
+
+      //call the action creator
+      this.props.fetchNewSensorDataRow(newSensor);
     }
   };
   render() {
-    console.log(this.props.sensorData);
-    if (!this.props.sensorData.length > 0) {
+    const { sensorData } = this.props;
+
+    // console.log(this.props.sensorData);
+    if (!sensorData.length > 0) {
       return <div>its empty</div>;
     } else {
-      console.log(`nixxxx  ${this.props.sensorData.length}`);
-      const data = this.props.sensorData;
-      console.log(data[0]);
-      const newDataSet = data[0].map(dataRow => {
+      // console.log(`nixxxx  ${this.props.sensorData.length}`);
+      // console.log(data);
+      const newDataSet = sensorData.map(dataRow => {
         return new SensorModel(dataRow);
       });
-      console.log(newDataSet);
       return (
         <div>
           <MainChart data={newDataSet} />
@@ -59,7 +63,13 @@ const mapStateToProps = ({ sensorData }) => {
 //anthing returned from this function will be props to container
 function mapDispatchToProps(dispatch) {
   //when fetchWeather is called, result shud be passed to all reducers
-  return bindActionCreators({ fetchSensorData: fetchSensorData }, dispatch); // this dispatch functions takes all the actions, funnel and gives them to all reducers
+  return bindActionCreators(
+    {
+      fetchSensorData: fetchSensorData,
+      fetchNewSensorDataRow: fetchNewSensorDataRow
+    },
+    dispatch
+  ); // this dispatch functions takes all the actions, funnel and gives them to all reducers
 }
 // promote SearchBar from component to container
 export default connect(mapStateToProps, mapDispatchToProps)(SensorData);

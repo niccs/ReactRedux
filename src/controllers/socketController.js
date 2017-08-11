@@ -44,7 +44,7 @@ export default class SocketController {
     sensorChannel.on("STATE_NEW", channelObj => {
       //      console.log('STATE_NEW - ', channelObj);
       if (onRequestReceived) {
-        onRequestReceived(STATE_NEW, channelObj);
+        onRequestReceived("STATE_NEW", channelObj);
       }
     });
     // you can can listen to multiple types
