@@ -5,7 +5,6 @@ import { fetchSensorData, fetchNewSensorDataRow } from "../actions/index";
 import SensorModel from "../models/sensorDataModel";
 
 import MainChart from "../components/mainChart";
-import SensorTableView from "../components/tableView";
 import SocketController from "../controllers/socketController";
 
 const data1 = [
@@ -17,7 +16,7 @@ const data1 = [
   { id: "Page F", temp: 2390, humidity: 3800, sensor1: 2500 },
   { id: "Page G", temp: 3490, humidity: 4300, sensor1: 2100 }
 ];
-class SensorData extends Component {
+class SensorDataTable extends Component {
   componentDidMount() {
     const socketController = new SocketController();
     this.props.fetchSensorData();
@@ -52,13 +51,12 @@ class SensorData extends Component {
       return (
         <div>
           <MainChart data={newDataSet} />
-          <SensorTableView data={newDataSet} />
         </div>
       );
     }
   }
 }
-// <MainChart data={newDataSet} />
+
 const mapStateToProps = ({ sensorData }) => {
   return { sensorData };
 };
@@ -74,4 +72,4 @@ function mapDispatchToProps(dispatch) {
   ); // this dispatch functions takes all the actions, funnel and gives them to all reducers
 }
 // promote SearchBar from component to container
-export default connect(mapStateToProps, mapDispatchToProps)(SensorData);
+export default connect(mapStateToProps, mapDispatchToProps)(SensorDataTable);

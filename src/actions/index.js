@@ -5,6 +5,7 @@ const ROOT_URL = `http://api.openweathermap.org/data/2.5/forecast?appId=${API_KE
 export const FETCH_WEATHER = "FETCH_WEATHER";
 export const FETCH_SENSOR_DATA = "FETCH_SENSOR_DATA";
 export const FETCH_SENSOR_ROW = "FETCH_SENSOR_ROW";
+export const LOGIN_DATA = "LOGIN_DATA";
 
 export function selectBook(book) {
   // console.log(`book selected is ${book.title}`);
@@ -39,5 +40,14 @@ export function fetchNewSensorDataRow(sensorRow) {
   return {
     type: FETCH_SENSOR_ROW,
     payload: sensorRow
+  };
+}
+
+export function postLoginData(values) {
+  const url = "http://localhost:4000/sensors/";
+  const request = axios.post(url, values);
+  return {
+    type: LOGIN_DATA,
+    payload: request
   };
 }
